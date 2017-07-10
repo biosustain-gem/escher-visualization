@@ -2,6 +2,7 @@
   "name": "escher_meets_react",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://myname.github.io/myapp",
   "dependencies": {
     "css-loader": "^0.28.4",
     "react": "^15.6.1",
@@ -32,7 +33,7 @@
     "eslint-plugin-import": "2.0.1",
     "eslint-plugin-jsx-a11y": "4.0.0",
     "eslint-plugin-react": "6.4.1",
-    "extract-text-webpack-plugin": "1.0.1",
+    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "0.10.0",
     "fs-extra": "0.30.0",
     "html-webpack-plugin": "2.24.0",
