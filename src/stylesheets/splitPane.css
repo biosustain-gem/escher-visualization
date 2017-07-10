@@ -1,0 +1,10 @@
+.Resizer {
+    background: aliceblue;
+}
+
+.vertical {
+    composes: Resizer;
+    width: 1em;
+    cursor: col-resize;
+}
+
