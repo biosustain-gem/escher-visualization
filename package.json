@@ -57,7 +57,7 @@
   },
   "scripts": {
     "start": "flow && node scripts/start.js",
-    "build": "flow && node scripts/build.js",
+    "build": "flow && node scripts/build.js && cp github_update.php build/",
     "test": "node scripts/test.js --env=jsdom",
     "flow": "flow"
   },
