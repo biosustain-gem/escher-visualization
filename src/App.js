@@ -1,21 +1,21 @@
+// @flow
 import React, { Component } from 'react';
-import CSSModules from 'react-css-modules';
 import Layout from './components/layout.js';
-import styles from './stylesheets/splitPane.css';
+import Escher from './components/escher.js';
+import Graphs from './components/graphs.js';
+import L_Data from './data/E coli core.Core metabolism.json';
+
 
 class App extends Component {
   render() {
+    let [MetaData, Data] = L_Data;
     return (
       <Layout>
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
-        <div>4</div>
-        <div>5</div>
-        <div>6</div>
+        <Graphs />
+        <Escher MetaData={MetaData} Data={Data} />
       </Layout>
     );
   }
 }
 
-export default CSSModules(App, styles);
+export default App;

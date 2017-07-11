@@ -1,9 +1,8 @@
 .Resizer {
-    background: aliceblue;
+    background: lightgray;
 }
 
-.vertical {
-    composes: Resizer;
+.Resizer.vertical {
     width: 1em;
     cursor: col-resize;
 }

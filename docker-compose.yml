@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  escherserver:
+    container_name: escherserver
+    build: ./
+    image: escherserver
+    ports:
+      - "4000:80"
+    volumes:
+      - ./build:/var/www/html
