@@ -1,0 +1,13 @@
+.Resizer {
+    background: lightgray;
+    width: 1em;
+
+    &.vertical {
+        cursor: col-resize;
+    }
+
+    &.horizontal {
+        cursor: row-resize;
+    }
+}
+

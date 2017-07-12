@@ -1,9 +1,0 @@
-.Resizer {
-    background: lightgray;
-}
-
-.Resizer.vertical {
-    width: 1em;
-    cursor: col-resize;
-}
-

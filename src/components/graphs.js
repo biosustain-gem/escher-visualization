@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 
 class Graphs extends React.Component {

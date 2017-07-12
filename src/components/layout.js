@@ -1,6 +1,7 @@
+// @flow
 import React from 'react';
 import SplitPane from 'react-split-pane';
-import './../stylesheets/splitPane.css';
+import './splitPane.css';
 
 class Layout extends React.Component {
 		render() {

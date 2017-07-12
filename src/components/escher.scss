@@ -1,0 +1,36 @@
+svg.escher {
+  width:  100%;
+  height: 100%;
+
+  .metabolite {
+    pointer-events: all;
+
+    circle {
+      fill: orange;
+      stroke-width:  1;
+      stroke: black;
+    }
+
+    text {
+      font-size: 3em;
+    }
+  }
+
+  .multimarker {
+    fill: aliceblue;
+    stroke-width:  1;
+    stroke: black;
+  };
+
+  .midmarker {
+    fill: lightgreen;
+    stroke-width:  1;
+    stroke: black;
+  };
+
+  .segment {
+    stroke: lightgray;
+    stroke-width: 10;
+    fill: none;
+  };
+};
