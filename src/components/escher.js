@@ -19,7 +19,6 @@ function Segment(props) {
 }
 
 function Reaction(props) {
-	console.log(props);
 	return <g>
 		{Object.values(props.segments).map(segment =>
 			<Segment from_node={props.nodes[segment.from_node_id] || {}}
@@ -35,7 +34,6 @@ class Escher extends React.Component {
 	render() {
 		console.time("renderescher");
 		let {reactions, nodes, text_labels, canvas} = this.props.Data;
-		console.log(this.props);
 		return <svg className="escher"
 		            viewBox={canvas.x + " " + canvas.y + " " + canvas.width + " " + canvas.height}>
 			<g id="Reactions">
