@@ -45,6 +45,7 @@
     "jest": "18.1.0",
     "json-loader": "0.5.4",
     "node-sass": "^4.5.3",
+    "npm-run-all": "^4.0.2",
     "object-assign": "4.1.1",
     "postcss-loader": "1.2.2",
     "promise": "7.1.1",
@@ -59,8 +60,9 @@
   "scripts": {
     "build-css": "node-sass src/ -o src/",
     "watch-css": "npm run build-css && node-sass src/ -o src/ --watch --recursive",
-    "start": "flow && npm run watch-css & node scripts/start.js",
-    "build": "flow && npm run build-css & node scripts/build.js && cp github_update.php build/",
+    "start-js": "node scripts/start.js",
+    "start": "$(npm bin)/npm-run-all -p watch-css start-js",
+    "build": "flow || npm run build-css && node scripts/build.js && cp github_update.php build/",
     "test": "node scripts/test.js --env=jsdom",
     "flow": "flow"
   },

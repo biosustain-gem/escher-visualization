@@ -1,6 +1,142 @@
 svg.escher {
   width:  100%;
-  height: 100%;
+  //height: 100%;
+
+  .label {
+    font-family: sans-serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 8px;
+    fill: #000;
+    stroke: none;
+
+    &.node {
+      font-size: 20px
+    }
+
+    &.reaction {
+      font-size: 30px;
+      fill: #202078;
+      text-rendering: optimizelegibility
+    }
+
+    &.gene {
+      font-size: 18px;
+      fill: #202078
+    }
+  }
+
+  .node {
+    circle {
+      stroke-width: 2px
+    }
+
+    &.midmarker, &.multimarker {
+      fill: #fff;
+      fill-opacity: .2;
+      stroke: #323232
+    }
+
+    &.metabolite-circle {
+      stroke: #a24510;
+      fill: #e0865b
+    }
+  }
+
+  .segment {
+    stroke: #334E75;
+    stroke-width: 10px;
+    fill: none;
+
+    .arrowhead {
+      fill: #334E75
+    }
+  }
+
+
+  .stoichiometry-label-rect {
+    fill: #fff;
+    opacity: .5
+  }
+
+  .stoichiometry-label {
+    fill: #334E75;
+    font-size: 17px
+  }
+
+  .membrane {
+    fill: none;
+    stroke: #fb0
+  }
+
+  .brush .extent {
+    fill-opacity: .1;
+    fill: #000;
+    stroke: #fff;
+    shape-rendering: crispEdges
+  }
+
+  #brush-container .background {
+    fill: none
+  }
+
+  .bezier-circle {
+    fill: #fff
+  }
+
+  .bezier-circle.b1 {
+    stroke: red
+  }
+
+  .bezier-circle.b2 {
+    stroke: #00f
+  }
+
+  .connect-line {
+    stroke: #c8c8c8
+  }
+
+  .direction-arrow {
+    stroke: #000;
+    stroke-width: 1px;
+    fill: #fff;
+    opacity: .3
+  }
+
+  .start-reaction-cursor {
+    cursor: pointer
+  }
+
+  .start-reaction-target {
+    stroke: #646464;
+    fill: none;
+    opacity: .5
+  }
+
+  .rotation-center-line {
+    stroke: red;
+    stroke-width: 5px
+  }
+
+  .highlight {
+    fill: #D97000;
+    text-decoration: underline
+  }
+
+  .cursor-grab {
+    cursor: grab;
+    cursor: -webkit-grab
+  }
+
+  .cursor-grabbing {
+    cursor: grabbing;
+    cursor: -webkit-grabbing
+  }
+
+  .edit-text-cursor {
+    cursor: text
+  }
+
 
   .metabolite {
     pointer-events: all;
@@ -13,6 +149,17 @@ svg.escher {
 
     text {
       font-size: 3em;
+
+
+      text-rendering: optimizelegibility;
+      cursor: default;
+      font-size: 8px;
+      font-size: 20px;
+      font-family: sans-serif;
+      font-style: italic;
+      font-weight: 700;
+      fill: #000;
+      stroke: none;
     }
   }
 
@@ -34,3 +181,4 @@ svg.escher {
     fill: none;
   };
 };
+

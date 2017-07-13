@@ -2,9 +2,38 @@
 import React from 'react';
 import './escher.css';
 
+function Segment(props) {
+	if (props.b1) {
+		return <path d={"M" + props.from_node.x + "," + props.from_node.y +
+										"C" + props.b1.x + "," + props.b1.y +
+										" " + props.b2.x + "," + props.b2.y +
+										" " + props.to_node.x + "," + props.to_node.y}
+		             className="segment" />
+	} else {
+		return <line x1={props.from_node.x}
+		             y1={props.from_node.y}
+		             x2={props.to_node.x}
+		             y2={props.to_node.y}
+		             className="segment" />;
+	}
+}
+
+function Reaction(props) {
+	console.log(props);
+	return <g>
+		{Object.values(props.segments).map(segment =>
+			<Segment from_node={props.nodes[segment.from_node_id] || {}}
+			         b1={segment.b1}
+			         b2={segment.b2}
+			         to_node={props.nodes[segment.to_node_id] || {}} />
+		)}
+		{props.label && <text x={props.label_x} y={props.label_y} className="label reaction">{props.label}</text>}
+	</g>
+}
+
 class Escher extends React.Component {
 	render() {
-		{console.time("renderescher")}
+		console.time("renderescher");
 		let {reactions, nodes, text_labels, canvas} = this.props.Data;
 		console.log(this.props);
 		return <svg className="escher"
@@ -12,21 +41,12 @@ class Escher extends React.Component {
 			<g id="Reactions">
 				{console.time("reactions")}
 				{Object.entries(reactions).map(function ([key, reaction]) {
-					return Object.values(reaction.segments).map(function (segment) {
-						let from_node = nodes[segment.from_node_id],
-								to_node = nodes[segment.to_node_id],
-								{b1,b2} = segment;
-						if (b1) {
-							return <path d={"M" + from_node.x + "," + from_node.y + "C" + b1.x + "," + b1.y + " " + b2.x + "," + b2.y + " " + to_node.x + "," + to_node.y}
-							             className="segment" />
-						} else {
-							return <line x1={from_node.x}
-							             y1={from_node.y}
-							             x2={to_node.x}
-							             y2={to_node.y}
-							             className="segment" />;
-						}
-					});
+					return <Reaction key={key}
+						               label={reaction.bigg_id}
+					                 label_x={reaction.label_x}
+					                 label_y={reaction.label_y}
+													 segments={reaction.segments}
+													 nodes={nodes} />;
 				})}
 				{console.timeEnd("reactions")}
 			</g>
