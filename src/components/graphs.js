@@ -2,11 +2,10 @@
 import React from 'react';
 
 class Graphs extends React.Component {
-	
 	render() {
-		return <svg>
-	
-		</svg>
+		return <div>
+			<h1>Other graphs</h1>
+		</div>
 	};
 }
 
