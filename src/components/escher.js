@@ -2,19 +2,27 @@
 import React from 'react';
 import './escher.css';
 
-function Reactions(props) {
-	return <g>
-		{console.time("reactions")}
-		{Object.entries(props.reactions).map(function ([key, reaction]) {
-			return <Reaction key={key}
-			                 label={reaction.bigg_id}
-			                 label_x={reaction.label_x}
-			                 label_y={reaction.label_y}
-			                 segments={reaction.segments}
-			                 nodes={props.nodes} />;
-		})}
-		{console.timeEnd("reactions")}
-	</g>
+class Reactions extends React.Component {
+	shouldComponentUpdate() {
+		console.log(arguments);
+		return false;
+	};
+	
+	render () {
+		console.log(this);
+		return <g>
+			{console.time("reactions")}
+			{Object.entries(this.props.reactions).map(key_reaction => {
+				return <Reaction key={key_reaction[0]}
+				                 label={key_reaction[1].bigg_id}
+				                 label_x={key_reaction[1].label_x}
+				                 label_y={key_reaction[1].label_y}
+				                 segments={key_reaction[1].segments}
+				                 nodes={this.props.nodes}/>;
+			})}
+			{console.timeEnd("reactions")}
+		</g>
+	};
 }
 function Reaction(props) {
 	return <g>
@@ -44,17 +52,24 @@ function Segment(props) {
 	}
 }
 
-function Nodes(props) {
-	return <g>
-		{console.time("nodes")}
-		{Object.entries(props.nodes).map(function ([key, node]) {
-			if(node.node_type === "metabolite") {
-				return <Metabolite key={key} node={node}/>;
-			}
-			return <Marker key={key} x={node.x} y={node.y} r={10} type={node.node_type} />;
-		})}
-		{console.timeEnd("nodes")}
-	</g>
+class Nodes extends React.Component {
+	shouldComponentUpdate() {
+		console.log(arguments);
+		return false;
+	};
+	
+	render() {
+		return <g>
+			{console.time("nodes")}
+			{Object.entries(this.props.nodes).map(function ([key, node]) {
+				if (node.node_type === "metabolite") {
+					return <Metabolite key={key} node={node}/>;
+				}
+				return <Marker key={key} x={node.x} y={node.y} r={10} type={node.node_type}/>;
+			})}
+			{console.timeEnd("nodes")}
+		</g>;
+	};
 }
 function Marker(props) {
 	return <circle cx={props.x}
@@ -63,6 +78,11 @@ function Marker(props) {
 								 r={props.r} />;
 }
 class Metabolite extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {};
+	};
+	
 	click = (e) => {
 		console.log(e,this);
 	};
@@ -89,8 +109,12 @@ class Escher extends React.Component {
 	}
 	
 	zoom = (e) => {
-		console.log(e.deltaY,this);
-		this.setState({zoom:this.state.zoom+e.deltaY/200})
+		if (!e.altKey) return;
+		e.preventDefault();
+		
+		let scale = this.state.zoom-e.deltaY/300; //arbitral value
+		if (scale < 1) scale = 1;
+		this.setState({zoom:scale})
 	};
 	
 	render() {
@@ -99,7 +123,7 @@ class Escher extends React.Component {
 		if (!this.props.data) return null;
 		let {reactions, nodes, text_labels, canvas} = this.props.data;
 		return <svg className="escher"
-		            // onWheel={this.zoom} style={{width: this.state.zoom*100 + "%"}}
+		            onWheel={this.zoom} transform={"scale("+this.state.zoom+")"}
 		            viewBox={canvas.x + " " + canvas.y + " " + canvas.width + " " + canvas.height}>
 			<Reactions reactions={reactions} nodes={nodes} />
 			<Nodes nodes={nodes} />
