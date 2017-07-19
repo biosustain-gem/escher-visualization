@@ -3,13 +3,11 @@ import React from 'react';
 import './escher.css';
 
 class Reactions extends React.Component {
-	shouldComponentUpdate() {
-		console.log(arguments);
-		return false;
+	shouldComponentUpdate(nextProps) {
+		return this.props.reactions !== nextProps.reactions;
 	};
 	
 	render () {
-		console.log(this);
 		return <g>
 			{console.time("reactions")}
 			{Object.entries(this.props.reactions).map(key_reaction => {
@@ -53,9 +51,8 @@ function Segment(props) {
 }
 
 class Nodes extends React.Component {
-	shouldComponentUpdate() {
-		console.log(arguments);
-		return false;
+	shouldComponentUpdate(nextProps) {
+		return this.props.nodes !== nextProps.nodes;
 	};
 	
 	render() {
@@ -119,11 +116,10 @@ class Escher extends React.Component {
 	
 	render() {
 		console.time("renderescher");
-		console.log(this.props);
 		if (!this.props.data) return null;
 		let {reactions, nodes, text_labels, canvas} = this.props.data;
 		return <svg className="escher"
-		            onWheel={this.zoom} transform={"scale("+this.state.zoom+")"}
+		            onWheel={this.zoom} style={{"width": this.state.zoom*100+"%"}}
 		            viewBox={canvas.x + " " + canvas.y + " " + canvas.width + " " + canvas.height}>
 			<Reactions reactions={reactions} nodes={nodes} />
 			<Nodes nodes={nodes} />
