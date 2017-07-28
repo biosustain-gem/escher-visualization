@@ -2,6 +2,7 @@
 import React from 'react';
 import SplitPane from 'react-split-pane';
 import './layout.css';
+import ContainerDimensions from 'react-container-dimensions';
 
 const s_layout = {
 	display: "flex",
@@ -20,7 +21,9 @@ class Layout extends React.Component {
 				<div style={s_body}>
 					<SplitPane split="vertical" minSize={50} defaultSize={250} >
 						{this.props.children[0]}
-						{this.props.children[1]}
+						<ContainerDimensions>
+							{this.props.children[1]}
+						</ContainerDimensions>
 					</SplitPane>
 				</div>
 			</div>

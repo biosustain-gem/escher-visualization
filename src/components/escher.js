@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import './escher.css';
 
@@ -26,15 +25,18 @@ function Reaction(props) {
 	return <g>
 		{Object.entries(props.segments).map(function ([key,segment]) {
 			return <Segment key={key}
-			                from_node={props.nodes[segment.from_node_id] || {}}
+			                from_node={props.nodes[segment.from_node_id]}
 			                b1={segment.b1}
 			                b2={segment.b2}
-			                to_node={props.nodes[segment.to_node_id] || {}}/>
+			                to_node={props.nodes[segment.to_node_id]}/>
 		})}
 		{props.label && <text x={props.label_x} y={props.label_y} className="label reaction">{props.label}</text>}
 	</g>
 }
 function Segment(props) {
+	if (!(props.from_node && props.to_node)) {
+		return null;
+	}
 	if (props.b1) {
 		return <path d={"M" + props.from_node.x + "," + props.from_node.y +
 										"C" + props.b1.x + "," + props.b1.y +
@@ -100,30 +102,102 @@ class Metabolite extends React.Component {
 class Escher extends React.Component {
 	constructor(props) {
 		super(props);
+		let zoom_init = props.width/props.data.canvas.width;
 		this.state = {
-			zoom: 1
+			zoom_init: zoom_init,
+			matrix: [zoom_init, 0, 0, zoom_init, - zoom_init * props.data.canvas.x, - zoom_init * props.data.canvas.y],
+		};
+	}
+	
+	zoom(scale,x,y) {
+		const m = this.state.matrix;
+		const len = m.length;
+		for (let i = 0; i < len; i++) {
+			m[i] *= scale;
+		}
+		m[4] += (1 - scale) * x;
+		m[5] += (1 - scale) * y;
+		// console.log(m);
+		this.setState({ matrix: m });
+	}
+	
+	pan(dx,dy) {
+		const m = this.state.matrix;
+		m[4] += dx;
+		m[5] += dy;
+		this.setState({ matrix: m });
+	}
+	
+	zoomHandler = (e) => {
+		// console.log(e,this);
+		
+		if (this.running) return;
+		this.running = true;
+		if (e.altKey) {
+			this.zoom(1-e.deltaY/1000,e.nativeEvent.offsetX,e.nativeEvent.offsetY);
+	
+		} else if (e.shiftKey) {
+			this.pan(1-e.deltaY,1-e.deltaX);
+			return;
+		} else this.pan(1-e.deltaX,1-e.deltaY);
+		this.running = false;
+		// e.preventDefault();
+		
+		// console.dir(Object(e));
+		// console.log("altKey",e.altKey);
+		// console.log("button",e.button);
+		// console.log("buttons",e.buttons);
+		// console.log("clientX",e.clientX);
+		// console.log("clientY",e.clientY);
+		// console.log("ctrlKey",e.ctrlKey);
+		// console.log("metaKey",e.metaKey);
+		// console.log("pageX",e.pageX);
+		// console.log("pageY",e.pageY);
+		// console.log("relatedTarget",e.relatedTarget);
+		// console.log("screenX",e.screenX);
+		// console.log("screenY",e.screenY);
+		// console.log("shiftKey",e.shiftKey);
+		// console.log("nativeEvent",e.nativeEvent);
+		// console.log("offsetX",e.nativeEvent.offsetX);
+		// console.log("offsY",e.nativeEvent.offsetY);
+		// console.time("zoomHandler");
+		// if (!this.state.zooming)
+		// console.log(e.deltaY/1000);
+		// let scale = this.state.zoom-e.deltaY/500; //arbitral value
+		// if (scale < 1) scale = 1;
+		// this.setState({zoom:scale});
+		// console.timeEnd("zoomHandler");
+	};
+	
+	// componentDidMount() {
+	// 	console.log(this.refs);
+	// 	console.log(this.refs.svg.getBBox().width,this.props.data.canvas.width);
+	// 	// if (this.state.zoom_init != this.refs.svg.offsetWidth/this.props.data.canvas.width)
+	// 	this.setState({zoom_init: this.refs.svg.getBBox().width/this.props.data.canvas.width});
+	// };
+	
+	componentWillReceiveProps(nextProps) {
+		if (this.props.width !== nextProps.width || this.props.data.canvas.width !==  nextProps.data.canvas.width) {
+			this.setState({zoom_init:nextProps.width/nextProps.data.canvas.width});
 		}
 	}
 	
-	zoom = (e) => {
-		if (!e.altKey) return;
-		e.preventDefault();
-		
-		let scale = this.state.zoom-e.deltaY/300; //arbitral value
-		if (scale < 1) scale = 1;
-		this.setState({zoom:scale})
-	};
-	
 	render() {
-		console.time("renderescher");
+		// console.dir(this);
+		// console.time("renderescher");
 		if (!this.props.data) return null;
-		let {reactions, nodes, text_labels, canvas} = this.props.data;
+		let {reactions, nodes, canvas} = this.props.data;
+		// console.log(this.props);
+		
 		return <svg className="escher"
-		            onWheel={this.zoom} style={{"width": this.state.zoom*100+"%"}}
-		            viewBox={canvas.x + " " + canvas.y + " " + canvas.width + " " + canvas.height}>
-			<Reactions reactions={reactions} nodes={nodes} />
-			<Nodes nodes={nodes} />
-			{console.timeEnd("renderescher")}
+		            onWheel={this.zoomHandler}
+		            // viewBox={canvas.x + " " + canvas.y + " " + canvas.width + " " + canvas.height}
+		>
+			<g transform={`matrix(${this.state.matrix.join(' ')})`}>
+				<Reactions reactions={reactions} nodes={nodes} />
+				<Nodes nodes={nodes} />
+			</g>
+			// console.timeEnd("renderescher")
 		</svg>;
 	};
 }
