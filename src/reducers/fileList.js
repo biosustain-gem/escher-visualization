@@ -1,7 +1,7 @@
 /**
  * Created by s163601 on 15/07/17.
  */
-import init_Data from "../data/esher_map_pch_0317.json";
+import init_Data from "../data/combined.json";
 
 const fileList = (state = {
 	files:[{
