@@ -1,5 +1,5 @@
 import React from 'react';
-import './escher.css';
+import './escher.scss';
 
 class Reactions extends React.Component {
 	shouldComponentUpdate(nextProps) {
@@ -176,9 +176,9 @@ class Escher extends React.Component {
 	// 	this.setState({zoom_init: this.refs.svg.getBBox().width/this.props.data.canvas.width});
 	// };
 	
-	componentWillReceiveProps(nextProps) {
-		if (this.props.width !== nextProps.width || this.props.data.canvas.width !==  nextProps.data.canvas.width) {
-			this.setState({zoom_init:nextProps.width/nextProps.data.canvas.width});
+	componentDidUpdate(prevProps) {
+		if (prevProps.width !== this.props.width || prevProps.data.canvas.width !== this.props.data.canvas.width) {
+			this.setState({zoom_init: this.props.width / this.props.data.canvas.width});
 		}
 	}
 	

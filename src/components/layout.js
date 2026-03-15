@@ -1,7 +1,6 @@
-// @flow
 import React from 'react';
 import SplitPane from 'react-split-pane';
-import './layout.css';
+import './layout.scss';
 import ContainerDimensions from 'react-container-dimensions';
 
 const s_layout = {

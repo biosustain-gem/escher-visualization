@@ -5,14 +5,16 @@ import { connect } from 'react-redux'
 import { toggleFile } from '../actions'
 import File from '../components/File'
 
-const getVisibleFiles = (fileList.files, filter) => {
+const getVisibleFiles = (files, filter) => {
 	switch (filter) {
 		case 'SHOW_ALL':
-			return fileList.files;
+			return files;
 		case 'SHOW_COMPLETED':
-			return fileList.files.filter(t => t.completed);
+			return files.filter(t => t.completed);
 		case 'SHOW_ACTIVE':
-			return fileList.files.filter(t => !t.completed);
+			return files.filter(t => !t.completed);
+		default:
+			return files;
 	}
 };
 
