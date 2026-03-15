@@ -1,19 +1,21 @@
-// @flow
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import dashboard from './reducers'
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import dashboard from './reducers';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
-import './index.css';
+import './index.scss';
 
-let store = createStore(dashboard,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStore(
+  dashboard,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
-ReactDOM.render(
-	<Provider store={store}>
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(
+  <Provider store={store}>
     <App />
-	</Provider>,
-  document.getElementById('root')
+  </Provider>
 );
